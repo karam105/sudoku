@@ -1,0 +1,69 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <thread>
+
+using namespace std;
+
+//int board[9][9];
+int *board[9];
+int row, col;
+void printBoard();
+bool is_row_ok();
+
+int main()
+{
+	for (int i = 0; i < 9; ++i)
+	{
+		board[i] = new int[9];
+	}
+	printBoard();
+	is_row_ok();
+	cout << endl;
+	return 0;
+}
+
+void printBoard()
+{
+	string line;
+	string val;
+	ifstream myFile("Testfile1.txt");
+
+	for (int row = 0; row < 9; ++row)
+	{
+		string line;
+		getline(myFile, line);
+		if (!myFile.good())
+			break;
+
+		stringstream iss(line);
+		cout << endl;
+
+		for (int col = 0; col < 9; ++col)
+		{
+			string val;
+			getline(iss, val, ',');
+			if (!iss.good())
+				break;
+
+			stringstream convertor(val);
+			convertor >> board[row][col];
+			cout << board[row][col] << "  ";
+		}
+	}
+
+
+	// int i, j;
+	// for (int i = 0; i < 9; ++i)
+	// {
+	// 	for (int j = 0; j < 9; ++j)
+	// 	{
+	// 		cout << board[i][j] << endl;
+	// 	}
+	// }
+}
+bool is_row_ok()
+{
+	cout << board[row][col];
+}
