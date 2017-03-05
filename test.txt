@@ -10,7 +10,7 @@ using namespace std;
 int *board[9];
 int row, col;
 void printBoard();
-bool is_row_ok();
+void is_row_ok();
 
 int main()
 {
@@ -63,7 +63,7 @@ void printBoard()
 	// 	}
 	// }
 }
-bool is_row_ok()
+void is_row_ok()
 {
 	cout << board[row][col];
 }
