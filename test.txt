@@ -57,8 +57,7 @@ void printBoard()
 void is_row_ok()
 {
 	bool found = false;
-	int i, j;
-	for (int i = 0; i < 10; ++i) //<------- edit starts here
+	for (int i = 0; i < 10; ++i)
 	{
 		int counter = 0;
 		for (int j = 0; j < 9; ++j)
