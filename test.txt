@@ -6,7 +6,6 @@
 
 using namespace std;
 
-//int board[9][9];
 int *board[9];
 int row, col;
 void printBoard();
@@ -52,18 +51,24 @@ void printBoard()
 			cout << board[row][col] << "  ";
 		}
 	}
-
-
-	// int i, j;
-	// for (int i = 0; i < 9; ++i)
-	// {
-	// 	for (int j = 0; j < 9; ++j)
-	// 	{
-	// 		cout << board[i][j] << endl;
-	// 	}
-	// }
+	cout << endl;
+	cout << endl;
 }
 void is_row_ok()
 {
-	cout << board[row][col];
+	bool found = false;
+	int i, j;
+	for (int i = 0; i < 10; ++i) //<------- edit starts here
+	{
+		int counter = 0;
+		for (int j = 0; j < 9; ++j)
+		{
+			if(board[i][j] == i)
+			{
+				counter++;
+			}
+			if(counter > 1)
+				break;
+		}
+	}
 }
