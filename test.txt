@@ -8,7 +8,7 @@ using namespace std;
 
 int *board[9];
 int row, col;
-void printBoard();
+int sumH[9], sumV[9];
 void is_row_ok();
 
 int main()
@@ -17,16 +17,8 @@ int main()
 	{
 		board[i] = new int[9];
 	}
-	printBoard();
-	is_row_ok();
-	cout << endl;
-	return 0;
-}
 
-void printBoard()
-{
 	string line;
-	string val;
 	ifstream myFile("Testfile1.txt");
 
 	for (int row = 0; row < 9; ++row)
@@ -51,25 +43,27 @@ void printBoard()
 			cout << board[row][col] << "  ";
 		}
 	}
+	is_row_ok();
+
 	cout << endl;
-	cout << endl;
+	return 0;
 }
+
 void is_row_ok()
 {
-	bool found = false;
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 9; ++i)
 	{
-		int counter = 0;
+		sumH[i] = 0;
+		sumV[i] = 0;
 		for (int j = 0; j < 9; ++j)
 		{
-			if(board[row][j] == i)
-			{
-				cout << "Before " << counter << endl;
-				counter++;
-				cout << counter << endl;
-			}
-			if(counter > 1)
-				break;
+			sumH[i] += board[i][j];
+			sumV[i] += board[j][i];
+			cout << endl;
+			cout << "BOARD: " << board[i][j] << endl;
+			cout << "I: " << i << endl;
+			cout << "J: " << j << endl;
+			cout << "sumH[i]:" << sumH[i] << endl;
 		}
 	}
 }
