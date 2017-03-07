@@ -2,7 +2,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <thread>
+#include <algorithm>
+#include <pthread.h>
 
 using namespace std;
 
@@ -25,8 +26,8 @@ int main()
 	{
 		string line;
 		getline(myFile, line);
-		if (!myFile.good())
-			break;
+		//if (!myFile.good())
+		//	break;
 
 		stringstream iss(line);
 		cout << endl;
@@ -51,19 +52,31 @@ int main()
 
 void is_row_ok()
 {
-	for (int i = 0; i < 9; ++i)
+	int row = 0;
+	bool duplicate = false;
+
+	while (row < 9)
 	{
-		sumH[i] = 0;
-		sumV[i] = 0;
-		for (int j = 0; j < 9; ++j)
+		int temp[9] = {};
+		int refTemp[9] = {};
+
+		for (int i = 0; i < row; ++i)
 		{
-			sumH[i] += board[i][j];
-			sumV[i] += board[j][i];
-			cout << endl;
-			cout << "BOARD: " << board[i][j] << endl;
-			cout << "I: " << i << endl;
-			cout << "J: " << j << endl;
-			cout << "sumH[i]:" << sumH[i] << endl;
+			temp[9] = board[row][i];
+			refTemp[9] = board[row][i];
+		}
+		sort(temp, temp + 9);
+
+		for (int i = 0; i < 9; ++i)
+		{
+			for (int j = i + 1; j < 9; ++j)
+			{
+				if (temp[i] == refTemp[i])
+				{
+					duplicate = true;
+					
+				}
+			}
 		}
 	}
 }
