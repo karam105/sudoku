@@ -74,9 +74,9 @@ void is_row_ok()
 				if (temp[i] == refTemp[i])
 				{
 					duplicate = true;
-					
 				}
 			}
 		}
+		break;
 	}
 }
