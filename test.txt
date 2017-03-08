@@ -8,6 +8,7 @@
 using namespace std;
 
 int *board[9];
+int numbers[9] = {1,2,3,4,5,6,7,8,9};
 int row, col;
 int sumH[9], sumV[9];
 void is_row_ok();
@@ -52,31 +53,13 @@ int main()
 
 void is_row_ok()
 {
-	int row = 0;
-	bool duplicate = false;
-
-	while (row < 9)
+	int rowIndex;
+	int colIndex;
+	for (rowIndex = 0; colIndex < rowIndex + 9; ++rowIndex)
 	{
-		int temp[9] = {};
-		int refTemp[9] = {};
-
-		for (int i = 0; i < row; ++i)
+		for (colIndex = 0; colIndex < colIndex + 9; ++colIndex)
 		{
-			temp[9] = board[row][i];
-			refTemp[9] = board[row][i];
+			
 		}
-		sort(temp, temp + 9);
-
-		for (int i = 0; i < 9; ++i)
-		{
-			for (int j = i + 1; j < 9; ++j)
-			{
-				if (temp[i] == refTemp[i])
-				{
-					duplicate = true;
-				}
-			}
-		}
-		break;
 	}
 }
