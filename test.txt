@@ -2,16 +2,15 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
 #include <pthread.h>
 
 using namespace std;
 
 int *board[9];
-int numbers[9] = {1,2,3,4,5,6,7,8,9};
 int row, col;
-int sumH[9], sumV[9];
-void is_row_ok();
+void *is_row_ok(void *param);
+void *is_col_ok(void *param);
+void *is_square_ok(void *param);
 
 int main()
 {
@@ -21,14 +20,12 @@ int main()
 	}
 
 	string line;
-	ifstream myFile("Testfile1.txt");
+	ifstream myFile("Testfile3.txt");
 
 	for (int row = 0; row < 9; ++row)
 	{
 		string line;
 		getline(myFile, line);
-		//if (!myFile.good())
-		//	break;
 
 		stringstream iss(line);
 		cout << endl;
@@ -45,21 +42,123 @@ int main()
 			cout << board[row][col] << "  ";
 		}
 	}
-	is_row_ok();
+
+	pthread_t thread1;
+	pthread_t thread2;
+	pthread_t thread3;
+	
+	pthread_create(&thread1, NULL, is_row_ok, NULL);
+	pthread_create(&thread2, NULL, is_col_ok, NULL);
+	pthread_create(&thread3, NULL, is_square_ok, NULL);
+
+	pthread_join(thread1, NULL);
+	pthread_join(thread2, NULL);
+	pthread_join(thread3, NULL);
 
 	cout << endl;
 	return 0;
 }
 
-void is_row_ok()
+void *is_row_ok(void *param)
 {
-	int rowIndex;
-	int colIndex;
-	for (rowIndex = 0; colIndex < rowIndex + 9; ++rowIndex)
+	int element_count = 0;
+	char element_value;
+	for (int i = 0; i < 9; ++i)
 	{
-		for (colIndex = 0; colIndex < colIndex + 9; ++colIndex)
+		for (int j = 0; j < 9; ++j)
 		{
-			
+			element_count = 0;
+			element_value = board[i][j];
+			if (element_value != ' ')
+			{
+				for (int k = 0; k < 9; ++k)
+				{
+					if (board[i][k] == element_value)
+						element_count++;
+				}
+			}
+		}
+					if (element_count >= 2)
+			{
+				cout << "Row " << i << " is invalid." << endl;
+			}
+			else
+			{
+				cout << "Row " << i << " is valid." << endl;
+			}
+	}
+	pthread_exit(NULL);
+}
+
+void *is_col_ok(void *param)
+{
+	int element_count = 0;
+	char element_value;
+	for (int i = 0; i < 9; ++i)
+	{
+		for (int j = 0; j < 9; ++j)
+		{
+			element_count = 0;
+			element_value = board[i][j];
+			if (element_value != ' ')
+			{
+				for (int k = 0; k < 9; ++k)
+				{
+					if (board[k][j] == element_value)
+						element_count++;
+				}
+			}
+			if (element_count >= 2)
+			{
+				cout << "Column " << j << " is invalid." << endl;
+			}
+			else
+			{
+				cout << "Column " << j << " is valid." << endl;
+			}
 		}
 	}
+	pthread_exit(NULL);
+}
+
+void *is_square_ok (void *param)
+{
+	int square = 0;
+	int element_count = 0;
+	char element_value;
+	for (int m = 0; m < 9; m+3)
+	{
+		for (int n = 0; n < 9; n+3)
+		{
+			for (int i = m; i < m+3; i++)
+			{
+				for (int j = n; j < n+3; j++)
+				{
+					element_count = 0;
+					element_value = board[i][j];
+					if (element_value != ' ')
+					{
+						for (int k = m; k < m+3; k++)
+						{
+							for (int l = n; l < n+3; l++)
+							{
+								if (board[k][l] == element_value)
+									element_count++;
+							}
+						}
+					}
+				}
+			}
+		}
+		square++;
+		if (element_count >= 2)
+		{
+			cout <<"Square " << square << " is invalid." << endl;
+		}
+		else
+		{
+			cout <<"column " << square << " is valid." << endl;
+		}
+	}
+	pthread_exit(NULL);
 }
