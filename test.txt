@@ -34,14 +34,13 @@ int main()
 		{
 			string val;
 			getline(iss, val, ',');
-			if (!iss.good())
-				break;
 
 			stringstream convertor(val);
 			convertor >> board[row][col];
-			cout << board[row][col] << "  ";
+			cout << board[row][col] << "";
 		}
 	}
+	cout << endl;
 
 	pthread_t thread1;
 	pthread_t thread2;
@@ -55,12 +54,12 @@ int main()
 	pthread_join(thread2, NULL);
 	pthread_join(thread3, NULL);
 
-	cout << endl;
 	return 0;
 }
 
 void *is_row_ok(void *param)
 {
+	cout << endl;
 	int element_count = 0;
 	char element_value;
 	for (int i = 0; i < 9; ++i)
@@ -92,14 +91,15 @@ void *is_row_ok(void *param)
 
 void *is_col_ok(void *param)
 {
+	cout << endl;
 	int element_count = 0;
 	char element_value;
-	for (int i = 0; i < 9; ++i)
+	for (int j = 0; j < 9; ++j)
 	{
-		for (int j = 0; j < 9; ++j)
+		for (int i = 0; i < 9; ++i)
 		{
 			element_count = 0;
-			element_value = board[i][j];
+			element_value = board[j][i];
 			if (element_value != ' ')
 			{
 				for (int k = 0; k < 9; ++k)
@@ -108,14 +108,15 @@ void *is_col_ok(void *param)
 						element_count++;
 				}
 			}
-			if (element_count >= 2)
-			{
-				cout << "Column " << j << " is invalid." << endl;
-			}
-			else
-			{
-				cout << "Column " << j << " is valid." << endl;
-			}
+		}
+
+		if (element_count >= 2)
+		{
+			cout << "Column " << j << " is invalid." << endl;
+		}
+		else
+		{
+			cout << "Column " << j << " is valid." << endl;
 		}
 	}
 	pthread_exit(NULL);
@@ -123,9 +124,10 @@ void *is_col_ok(void *param)
 
 void *is_square_ok (void *param)
 {
+	cout << endl;
 	int square = 0;
 	int element_count = 0;
-	char element_value;
+	int element_value;
 	for (int m = 0; m < 9; m+3)
 	{
 		for (int n = 0; n < 9; n+3)
@@ -134,30 +136,29 @@ void *is_square_ok (void *param)
 			{
 				for (int j = n; j < n+3; j++)
 				{
-					element_count = 0;
-					element_value = board[i][j];
-					if (element_value != ' ')
+					for (int k = m; k < m+3; k++)
 					{
-						for (int k = m; k < m+3; k++)
+						element_count = 0;
+						element_value = board[i][j];
+						for (int l = n; l < n+3; l++)
 						{
-							for (int l = n; l < n+3; l++)
-							{
-								if (board[k][l] == element_value)
-									element_count++;
-							}
+							if (board[k][l] == element_value)
+								element_count++;
 						}
 					}
+					if (element_count >= 2)
+					{
+						cout <<"Square " << square << " is invalid." << endl;
+						break;
+					}
+					else
+					{
+						cout <<"Square " << square << " is valid." << endl;
+					}
+					if (square == 9)
+						exit(0);
 				}
 			}
-		}
-		square++;
-		if (element_count >= 2)
-		{
-			cout <<"Square " << square << " is invalid." << endl;
-		}
-		else
-		{
-			cout <<"column " << square << " is valid." << endl;
 		}
 	}
 	pthread_exit(NULL);
